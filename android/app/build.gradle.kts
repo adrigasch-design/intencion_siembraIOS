@@ -47,34 +47,32 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            if (keystorePropertiesFile.exists()) {
-                val storeFilePath = keystoreProperties.getProperty("storeFile")
-                val storePasswordProp = keystoreProperties.getProperty("storePassword")
-                val keyAliasProp = keystoreProperties.getProperty("keyAlias")
-                val keyPasswordProp = keystoreProperties.getProperty("keyPassword")
+    create("release") {
+        // Soporta variables de entorno de Codemagic O key.properties local
+        val storeFilePath = System.getenv("CM_KEYSTORE_PATH") ?: keystoreProperties.getProperty("storeFile")
+        val storePasswordProp = System.getenv("CM_KEYSTORE_PASSWORD") ?: keystoreProperties.getProperty("storePassword")
+        val keyAliasProp = System.getenv("CM_KEY_ALIAS") ?: keystoreProperties.getProperty("keyAlias")
+        val keyPasswordProp = System.getenv("CM_KEY_PASSWORD") ?: keystoreProperties.getProperty("keyPassword")
 
-                if (storeFilePath.isNullOrBlank() ||
-                    storePasswordProp.isNullOrBlank() ||
-                    keyAliasProp.isNullOrBlank() ||
-                    keyPasswordProp.isNullOrBlank()
-                ) {
-                    throw GradleException(
-                        "Faltan claves en key.properties. Revisa storeFile, storePassword, keyAlias y keyPassword."
-                    )
-                }
-
-                storeFile = file(storeFilePath)
-                storePassword = storePasswordProp
-                keyAlias = keyAliasProp
-                keyPassword = keyPasswordProp
-                enableV1Signing = true
-                enableV2Signing = true
-            } else {
-                throw GradleException("No se encontró android/key.properties. Créalo antes de compilar release.")
-            }
+        if (
+            storeFilePath.isNullOrBlank() ||
+            storePasswordProp.isNullOrBlank() ||
+            keyAliasProp.isNullOrBlank() ||
+            keyPasswordProp.isNullOrBlank()
+        ) {
+            throw GradleException(
+                "Faltan claves para la firma release. Revisa variables de entorno o key.properties."
+            )
         }
+
+        storeFile = file(storeFilePath)
+        storePassword = storePasswordProp
+        keyAlias = keyAliasProp
+        keyPassword = keyPasswordProp
+        enableV1Signing = true
+        enableV2Signing = true
     }
+}
 
     buildTypes {
         release {
