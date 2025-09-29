@@ -5,16 +5,10 @@
   <key>CFBundleDisplayName</key>
   <string>Intencion Siembra</string>
   <key>CFBundleIdentifier</key>
-  <string>com.adriaschad.intencionsiembra</string>
+  <string>com.adrigasch.intencion_siembraIOS</string>
   <key>CFBundleShortVersionString</key>
   <string>1.0.0</string>
   <key>CFBundleVersion</key>
   <string>1</string>
-  <!-- Permiso para cámara (si usas) -->
-  <key>NSCameraUsageDescription</key>
-  <string>Esta app necesita acceso a la cámara.</string>
-  <!-- Permiso para ubicación (si usas) -->
-  <key>NSLocationWhenInUseUsageDescription</key>
-  <string>Esta app necesita tu ubicación para funcionar correctamente.</string>
 </dict>
 </plist>
